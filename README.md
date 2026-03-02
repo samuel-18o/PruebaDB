@@ -98,6 +98,41 @@ npm run dev
 npm start
 ```
 
+## 📂 Project Structure
+
+```
+megastore-project/
+├── data/
+│   └── raw-transactions.csv      # Sample data
+├── docs/
+│   ├── sql-schema.sql            # PostgreSQL DDL
+│   ├── mongodb-schema.js         # MongoDB validation
+│   └── DER.pdf                   # ER diagram
+├── scripts/
+│   ├── migrate-data.js           # Data migration script
+│   └── grant-permissions.sql
+├── src/
+│   ├── config/
+│   │   ├── database.js           # PostgreSQL connection
+│   │   └── mongodb.js            # MongoDB connection
+│   ├── controllers/
+│   │   ├── product.controller.js     # Product endpoints
+│   │   └── analytics.controller.js   # Analytics endpoints
+│   ├── models/
+│   │   └── product.model.js      # Product data access
+│   ├── routes/
+│   │   ├── product.routes.js
+│   │   └── analytics.routes.js
+│   ├── services/
+│   │   └── audit.service.js      # Audit logging
+│   ├── app.js                    # Express app setup
+│   └── server.js                 # Server entry point
+├── .env                          # Environment variables
+├── .gitignore
+└── package.json
+
+```
+
 ## Data Model
 
 ### SQL Schema (3NF)
