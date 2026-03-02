@@ -47,6 +47,7 @@ cd megastore-project
 ```
 
 ### 2. Install Dependencies
+`/PruebaDB/megastore_global`
 ```bash
 npm install
 ```
