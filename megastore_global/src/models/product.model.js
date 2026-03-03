@@ -58,16 +58,53 @@ class ProductModel {
     
     // Update product
     static async update(id, productData) {
-        const { name, unit_price, category_id, supplier_id } = productData;
+        // Build dynamic query to update only provided fields
+        const fields = [];
+        const values = [];
+        let paramCount = 1;
+        
+        // Only include fields that are actually provided
+        if (productData.name !== undefined) {
+            fields.push(`name = $${paramCount++}`);
+            values.push(productData.name);
+        }
+        
+        if (productData.unit_price !== undefined) {
+            fields.push(`unit_price = $${paramCount++}`);
+            values.push(productData.unit_price);
+        }
+        
+        if (productData.category_id !== undefined) {
+            fields.push(`category_id = $${paramCount++}`);
+            values.push(productData.category_id);
+        }
+        
+        if (productData.supplier_id !== undefined) {
+            fields.push(`supplier_id = $${paramCount++}`);
+            values.push(productData.supplier_id);
+        }
+        
+        if (productData.sku !== undefined) {
+            fields.push(`sku = $${paramCount++}`);
+            values.push(productData.sku);
+        }
+        
+        // If no valid fields to update, return null
+        if (fields.length === 0) {
+            return null;
+        }
+        
+        // Add the id as the last parameter
+        values.push(id);
         
         const query = `
             UPDATE products
-            SET name = $1, unit_price = $2, category_id = $3, supplier_id = $4
-            WHERE id = $5
+            SET ${fields.join(', ')}
+            WHERE id = $${paramCount}
             RETURNING *
         `;
         
-        const result = await pool.query(query, [name, unit_price, category_id, supplier_id, id]);
+        const result = await pool.query(query, values);
         return result.rows[0];
     }
     

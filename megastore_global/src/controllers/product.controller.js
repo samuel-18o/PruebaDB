@@ -78,6 +78,29 @@ class ProductController {
             const { id } = req.params;
             const productData = req.body;
             
+            // Validate that at least one field is provided
+            if (Object.keys(productData).length === 0) {
+                return res.status(400).json({
+                    success: false,
+                    message: 'No data provided for update'
+                });
+            }
+            
+            // If category_id or supplier_id are provided, they must be valid (not null/undefined)
+            if ('category_id' in productData && !productData.category_id) {
+                return res.status(400).json({
+                    success: false,
+                    message: 'category_id cannot be empty or null'
+                });
+            }
+            
+            if ('supplier_id' in productData && !productData.supplier_id) {
+                return res.status(400).json({
+                    success: false,
+                    message: 'supplier_id cannot be empty or null'
+                });
+            }
+            
             const updatedProduct = await ProductModel.update(id, productData);
             
             if (!updatedProduct) {

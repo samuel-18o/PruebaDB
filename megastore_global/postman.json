@@ -60,7 +60,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n  \"sku\": \"TEST-001\",\n  \"name\": \"Producto de Prueba\",\n  \"description\": \"Descripción del producto de prueba\",\n  \"unit_price\": 99.99,\n  \"stock_quantity\": 100,\n  \"category_id\": 1,\n  \"supplier_id\": 1\n}"
+							"raw": "{\n  \"sku\": \"TEST-001\",\n  \"name\": \"Producto de Prueba\",\n  \"unit_price\": 99.99,\n  \"category_id\": 1,\n  \"supplier_id\": 1\n}"
 						},
 						"url": {
 							"raw": "{{base_url}}/api/products",
@@ -88,7 +88,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n  \"name\": \"Producto Actualizado\",\n  \"description\": \"Descripción actualizada\",\n  \"unit_price\": 149.99,\n  \"stock_quantity\": 75\n}"
+							"raw": "{\n  \"name\": \"Mouse Logitech M502 Actualizado\",\n  \"unit_price\": 175000\n}"
 						},
 						"url": {
 							"raw": "{{base_url}}/api/products/1",
@@ -101,7 +101,7 @@
 								"1"
 							]
 						},
-						"description": "Actualiza un producto existente"
+						"description": "Actualiza un producto. Soporta actualizaciones parciales."
 					},
 					"response": []
 				},
@@ -111,38 +111,17 @@
 						"method": "DELETE",
 						"header": [],
 						"url": {
-							"raw": "{{base_url}}/api/products/1",
+							"raw": "{{base_url}}/api/products/16",
 							"host": [
 								"{{base_url}}"
 							],
 							"path": [
 								"api",
 								"products",
-								"1"
+								"16"
 							]
 						},
-						"description": "Elimina un producto y registra el audit log en MongoDB"
-					},
-					"response": []
-				},
-				{
-					"name": "6. GET Product Audit Logs",
-					"request": {
-						"method": "GET",
-						"header": [],
-						"url": {
-							"raw": "{{base_url}}/api/products/audit/1",
-							"host": [
-								"{{base_url}}"
-							],
-							"path": [
-								"api",
-								"products",
-								"audit",
-								"1"
-							]
-						},
-						"description": "Obtiene el historial de auditoría de un producto específico desde MongoDB"
+						"description": "Elimina un producto"
 					},
 					"response": []
 				}
@@ -153,7 +132,7 @@
 			"name": "Analytics",
 			"item": [
 				{
-					"name": "7. GET Supplier Analysis",
+					"name": "6. GET Supplier Analysis",
 					"request": {
 						"method": "GET",
 						"header": [],
@@ -168,12 +147,12 @@
 								"suppliers"
 							]
 						},
-						"description": "Análisis de proveedores: productos en catálogo, items vendidos y valor total de ventas"
+						"description": "Análisis de proveedores"
 					},
 					"response": []
 				},
 				{
-					"name": "8. GET Customer History",
+					"name": "7. GET Customer History",
 					"request": {
 						"method": "GET",
 						"header": [],
@@ -190,12 +169,12 @@
 								"history"
 							]
 						},
-						"description": "Historial completo de compras de un cliente específico"
+						"description": "Historial de compras del cliente"
 					},
 					"response": []
 				},
 				{
-					"name": "9. GET Top Products by Category",
+					"name": "8. GET Top Products by Category",
 					"request": {
 						"method": "GET",
 						"header": [],
@@ -212,7 +191,7 @@
 								"Electronics"
 							]
 						},
-						"description": "Top productos más vendidos en una categoría específica"
+						"description": "Top productos por categoría"
 					},
 					"response": []
 				}

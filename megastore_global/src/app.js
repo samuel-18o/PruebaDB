@@ -15,7 +15,7 @@ app.use(morgan('dev'));
 // Routes
 app.get('/', (req, res) => {
     res.json({
-        message: 'MegaStore API - v1.0',
+        message: 'MegaStore API is running',
         status: 'active',
         endpoints: {
             products: '/api/products',

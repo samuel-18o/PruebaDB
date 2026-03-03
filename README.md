@@ -158,8 +158,8 @@ megastore-project/
 |--------|----------|-------------|
 | GET | `/api/products` | Get all products |
 | GET | `/api/products/:id` | Get product by ID |
-| POST | `/api/products` | Create new product |
-| PUT | `/api/products/:id` | Update product |
+| POST | `/api/products` | Create new product (validates required fields) |
+| PUT | `/api/products/:id` | Update product (partial updates supported) |
 | DELETE | `/api/products/:id` | Delete product |
 
 ### Analytics (Business Intelligence)
@@ -180,13 +180,8 @@ The migration script (`scripts/migrate-data.js`) implements **idempotency**:
 
 ## Testing with Postman
 
-Import the collection:
-```bash
-docs/MegaStore-API.postman_collection.json
-```
+Import: `megastore_global/postman.json`
 
-Test scenarios included:
-- Complete CRUD operations
-- Supplier analysis queries
-- Customer purchase history
-- Category-based product rankings
+Includes:
+- CRUD operations (GET, POST, PUT, DELETE)
+- Analytics queries (suppliers, customers, top products)
