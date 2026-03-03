@@ -98,7 +98,7 @@ npm run dev
 npm start
 ```
 
-## 📂 Project Structure
+## Project Structure
 
 ```
 megastore-project/
