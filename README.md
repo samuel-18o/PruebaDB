@@ -150,6 +150,97 @@ megastore-project/
 **Indexing:**
 - `transaction_id`: Unique index for order tracking
 
+## Database Tables
+
+### PostgreSQL Tables
+
+#### 1. customers
+Master table for customer information.
+
+| Column | Type | Constraints | Description |
+|--------|------|-------------|-------------|
+| id | SERIAL | PRIMARY KEY | Auto-incremented customer ID |
+| full_name | VARCHAR(255) | NOT NULL | Customer's full name |
+| email | VARCHAR(255) | UNIQUE, NOT NULL | Customer's email address |
+| address | TEXT | - | Customer's physical address |
+| created_at | TIMESTAMP | DEFAULT CURRENT_TIMESTAMP | Record creation timestamp |
+
+#### 2. suppliers
+Supplier master data.
+
+| Column | Type | Constraints | Description |
+|--------|------|-------------|-------------|
+| id | SERIAL | PRIMARY KEY | Auto-incremented supplier ID |
+| name | VARCHAR(255) | UNIQUE, NOT NULL | Supplier's company name |
+| contact | VARCHAR(255) | - | Contact information |
+| created_at | TIMESTAMP | DEFAULT CURRENT_TIMESTAMP | Record creation timestamp |
+
+#### 3. categories
+Product category catalog.
+
+| Column | Type | Constraints | Description |
+|--------|------|-------------|-------------|
+| id | SERIAL | PRIMARY KEY | Auto-incremented category ID |
+| name | VARCHAR(100) | UNIQUE, NOT NULL | Category name |
+
+#### 4. products
+Product catalog with foreign key relationships.
+
+| Column | Type | Constraints | Description |
+|--------|------|-------------|-------------|
+| id | SERIAL | PRIMARY KEY | Auto-incremented product ID |
+| sku | VARCHAR(50) | UNIQUE, NOT NULL | Stock keeping unit (unique identifier) |
+| name | VARCHAR(255) | NOT NULL | Product name |
+| unit_price | DECIMAL(10,2) | NOT NULL, CHECK >= 0 | Product unit price |
+| category_id | INTEGER | NOT NULL, FK → categories(id) | Reference to category |
+| supplier_id | INTEGER | NOT NULL, FK → suppliers(id) | Reference to supplier |
+| created_at | TIMESTAMP | DEFAULT CURRENT_TIMESTAMP | Record creation timestamp |
+
+**Foreign Keys:**
+- `category_id` → `categories(id)` ON DELETE RESTRICT
+- `supplier_id` → `suppliers(id)` ON DELETE RESTRICT
+
+### MongoDB Collections
+
+#### 1. orders
+Transactional data with embedded order items.
+
+| Field | Type | Required | Description |
+|-------|------|----------|-------------|
+| transaction_id | string | Yes | Unique transaction identifier |
+| order_date | date | Yes | Date when the order was placed |
+| customer_id | int | Yes | Reference to PostgreSQL customer ID |
+| items | array | Yes | Array of embedded order items (min 1) |
+| items[].product_id | int | Yes | Reference to PostgreSQL product ID |
+| items[].sku | string | Yes | Product SKU snapshot |
+| items[].product_name | string | Yes | Product name at time of purchase |
+| items[].unit_price | double | Yes | Price at time of purchase (≥ 0) |
+| items[].quantity | int | Yes | Quantity ordered (≥ 1) |
+| items[].subtotal | double | Yes | Item subtotal (unit_price × quantity) |
+| total_amount | double | Yes | Total order amount (≥ 0) |
+| created_at | date | No | Timestamp of order creation |
+
+**Indexes:**
+- `transaction_id`: Unique index
+- `customer_id`: Non-unique index
+- `order_date`: Descending index
+
+#### 2. audit_logs
+Audit trail for database operations.
+
+| Field | Type | Required | Description |
+|-------|------|----------|-------------|
+| entity_type | string | Yes | Type of entity (product, customer, supplier, category, order) |
+| entity_id | int/string | Yes | ID of the affected entity |
+| operation | string | Yes | Operation type (DELETE, UPDATE, CREATE) |
+| deleted_data | object | No | Snapshot of deleted/modified data |
+| deleted_by | string | No | User or system that performed the action |
+| deleted_at | date | Yes | Timestamp of the operation |
+
+**Indexes:**
+- `entity_type + entity_id`: Compound index
+- `deleted_at`: Descending index
+
 ## API Endpoints
 
 ### Products (CRUD)
